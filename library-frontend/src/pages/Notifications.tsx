@@ -7,20 +7,17 @@ import Popup from "../components/Popup";
 
 export default function Notifications() {
   const [loading, setLoading] = useState(false);
-  const [err, setErr] = useState<string | null>(null);
   const [data, setData] = useState<Notification[]>([]);
   const [meta, setMeta] = useState<PaginationMeta>({ page: 1, limit: 10, total: 0, totalPages: 1 });
   const [popup, setPopup] = useState<{ title: string; message: string; variant: "success" | "error" } | null>(null);
 
   const fetchNotifications = async (page = 1) => {
     setLoading(true);
-    setErr(null);
     try {
       const res = await getNotificationsApi({ page, limit: meta.limit });
       setData(res.data.data);
       setMeta(res.data.meta);
     } catch (e: any) {
-      setErr(e?.message || "Gagal mengambil notifikasi");
     } finally {
       setLoading(false);
     }
